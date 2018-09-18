@@ -1,3 +1,5 @@
+
+
 # -*- coding: utf-8 -*-
 """
 Created on Sat Nov 14 21:10:12 2015
@@ -8,6 +10,9 @@ Created on Sat Nov 14 21:10:12 2015
 import math
 import numpy
 import matplotlib.pyplot as plt
+from configuration import *
+
+
 
 
 def ik(bPos, pPos, a, ik=True):
@@ -36,7 +41,7 @@ def ik(bPos, pPos, a, ik=True):
     #Hence orientation of platform wrt base
     
     uvw = numpy.zeros(pPos.shape)
-    for i in xrange(6):
+    for i in range(6):
         uvw[i, :] = numpy.dot(Rzyx, pPos[i, :])
         
     
@@ -87,7 +92,7 @@ def fk(bPos, pPos, L):
         #Hence orientation of platform wrt base
         
         uvw = numpy.zeros(pPos.shape)
-        for i in xrange(6):
+        for i in range(6):
             uvw[i, :] = numpy.dot(Rzyx, pPos[i, :])
             
         
@@ -104,14 +109,14 @@ def fk(bPos, pPos, L):
         sumF = numpy.sum(numpy.abs(f))
         if sumF < tol_f:
             #success!
-            print "Converged! Output is in 'a' variable"
+            print("Converged! Output is in 'a' variable")
             break
         
         #As using the newton-raphson matrix, need the jacobian (/hessian?) matrix
         #Using paper linked above:
         dfda = numpy.zeros((6, 6))
         dfda[:, 0:3] = 2*(xbar + uvw)
-        for i in xrange(6):
+        for i in range(6):
             #Numpy * is elementwise multiplication!!
             #Indicing starts at 0!
             #dfda4 is swapped with dfda6 for magic reasons!  
@@ -124,22 +129,22 @@ def fk(bPos, pPos, L):
         delta_a = numpy.linalg.solve(dfda, f)
     
         if abs(numpy.sum(delta_a)) < tol_a:
-            print "Small change in lengths -- converged?"
+            print("Small change in lengths -- converged?")
             break
         a = a + delta_a
     
     #for i in xrange(3,6):
     #    a[i] = math.degrees(a[i])
-    print "In %d iterations" % (iterNum)
+    print("In %d iterations" % (iterNum))
     return a
     
     
 def main():   
 
 	#Load S-G platform configuration and convert to numpy arrays
-    from configuration import *
-    bPos = numpy.array(bPos)
-    pPos = numpy.array(pPos)
+    
+    n_bPos = numpy.array(bPos)
+    n_pPos = numpy.array(pPos)
 
     
     #L = numpy.array([122.759, 122.759, 122.759, 122.759, 122.759, 122.759]).transpose()
@@ -154,12 +159,12 @@ def main():
     t = numpy.arange(0, math.pi/6, 0.01)
     for i in t:
         a = numpy.array([0,0,0, i, 0, 0]).transpose()
-        l = ik(bPos, pPos, a)
+        l = ik(n_bPos, n_pPos, a)
         lengths.append(l)
     angle = []
     for L in lengths:
-        print "L", L
-        a = fk(bPos, pPos, L)
+        print("L", L)
+        a = fk(n_bPos, n_pPos, L)
         angle.append(a[3])
     plt.plot(t, angle)
     plt.xlabel('Input Angle (rad)')

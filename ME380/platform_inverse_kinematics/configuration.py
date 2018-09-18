@@ -1,3 +1,5 @@
+
+
 # -*- coding: utf-8 -*-
 """
 Created on Thu Dec 03 14:29:07 2015
@@ -5,6 +7,7 @@ Created on Thu Dec 03 14:29:07 2015
 @author: Jak
 """
 import math
+
 
 #define coord system origin as the centre of the bottom plate
 #Find base plate attachment locations
@@ -28,4 +31,3 @@ legMax = [100]*6
 A = [math.pi/4]*6
 #Platform ball joint limits
 B = [math.pi/2]*6
-
