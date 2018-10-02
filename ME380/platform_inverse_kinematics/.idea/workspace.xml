@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="57901432-2625-4a96-aede-aa7930c90fa4" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/kinematics.py" beforeDir="false" afterPath="$PROJECT_DIR$/kinematics.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -14,34 +15,35 @@
     <session id="1857089068">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="3" />
+          <entry key="project.closed" value="4" />
           <entry key="project.open.time.0" value="2" />
           <entry key="project.open.time.11" value="1" />
           <entry key="project.open.time.4" value="1" />
-          <entry key="project.opened" value="4" />
+          <entry key="project.open.time.6" value="1" />
+          <entry key="project.opened" value="5" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="Python Console" value="14" />
           <entry key="dummy" value="10" />
-          <entry key="py" value="2603" />
+          <entry key="py" value="4313" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="10" />
-          <entry key="Python" value="2617" />
+          <entry key="Python" value="4327" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="py" value="3" />
+          <entry key="py" value="5" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="Python" value="3" />
+          <entry key="Python" value="5" />
         </counts>
       </usages-collector>
     </session>
@@ -51,12 +53,33 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/kinematics.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="427">
-              <caret line="95" selection-start-line="95" selection-end-line="95" />
+            <state relative-caret-position="3040">
+              <caret line="144" selection-start-line="144" selection-end-line="144" />
               <folding>
                 <element signature="e#85#96#0" expanded="true" />
-                <marker date="1538443560485" expanded="true" signature="3512:4839" ph="..." />
+                <marker date="1538452297293" expanded="true" signature="3510:6901" ph="..." />
+                <marker date="1538452297293" expanded="true" signature="4356:4361" ph="..." />
+                <marker date="1538452297293" expanded="true" signature="4356:4892" ph="..." />
+                <marker date="1538452297293" expanded="true" signature="6479:6482" ph="..." />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/anaconda3/envs/me380/lib/python3.6/site-packages/scipy/sparse/linalg/isolve/_gcrotmk.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1232">
+              <caret line="162" selection-start-line="162" selection-end-line="162" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/anaconda3/envs/me380/lib/python3.6/site-packages/scipy/sparse/linalg/isolve/utils.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="362">
+              <caret line="68" selection-start-line="68" selection-end-line="68" />
             </state>
           </provider>
         </entry>
@@ -64,8 +87,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$USER_HOME$/anaconda3/envs/me380/lib/python3.6/site-packages/scipy/optimize/nonlin.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="422">
-              <caret line="350" lean-forward="true" selection-start-line="350" selection-end-line="350" />
+            <state relative-caret-position="346">
+              <caret line="312" selection-start-line="312" selection-end-line="312" />
             </state>
           </provider>
         </entry>
@@ -82,7 +105,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$USER_HOME$/anaconda3/envs/me380/lib/python3.6/site-packages/scipy/optimize/minpack.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="522">
+            <state relative-caret-position="696">
               <caret line="40" selection-start-line="40" selection-end-line="40" />
             </state>
           </provider>
@@ -110,7 +133,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="4">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="1985" />
     <option name="y" value="48" />
     <option name="width" value="1855" />
@@ -122,6 +145,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -133,7 +157,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -194,15 +217,15 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1985" y="48" width="1855" height="2112" extended-state="4" />
+    <frame x="130" y="-8" width="3710" height="2168" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.16731088" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.08265139" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.3296875" />
-      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.41201717" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.41197917" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -223,31 +246,25 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/kinematics.py</url>
-          <line>95</line>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/kinematics.py</url>
-          <line>63</line>
-          <option name="timeStamp" value="6" />
+          <line>144</line>
+          <option name="timeStamp" value="7" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+    <watches-manager>
+      <configuration name="PythonConfigurationType">
+        <watch expression="results[0:10] [7]" />
+      </configuration>
+    </watches-manager>
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/__init__.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/configuration.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="232">
-          <caret line="8" selection-start-line="8" selection-end-line="8" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/configuration.py" />
     <entry file="file://$USER_HOME$/anaconda3/envs/me380/lib/python3.6/site-packages/scipy/optimize/minpack.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="522">
+        <state relative-caret-position="696">
           <caret line="40" selection-start-line="40" selection-end-line="40" />
         </state>
       </provider>
@@ -261,18 +278,35 @@
     </entry>
     <entry file="file://$USER_HOME$/anaconda3/envs/me380/lib/python3.6/site-packages/scipy/optimize/nonlin.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="422">
-          <caret line="350" lean-forward="true" selection-start-line="350" selection-end-line="350" />
+        <state relative-caret-position="346">
+          <caret line="312" selection-start-line="312" selection-end-line="312" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/anaconda3/envs/me380/lib/python3.6/site-packages/scipy/sparse/linalg/isolve/utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="362">
+          <caret line="68" selection-start-line="68" selection-end-line="68" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/anaconda3/envs/me380/lib/python3.6/site-packages/scipy/sparse/linalg/isolve/_gcrotmk.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1232">
+          <caret line="162" selection-start-line="162" selection-end-line="162" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/kinematics.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="427">
-          <caret line="95" selection-start-line="95" selection-end-line="95" />
+        <state relative-caret-position="3040">
+          <caret line="144" selection-start-line="144" selection-end-line="144" />
           <folding>
             <element signature="e#85#96#0" expanded="true" />
-            <marker date="1538443560485" expanded="true" signature="3512:4839" ph="..." />
+            <marker date="1538452297293" expanded="true" signature="3510:6901" ph="..." />
+            <marker date="1538452297293" expanded="true" signature="4356:4361" ph="..." />
+            <marker date="1538452297293" expanded="true" signature="4356:4892" ph="..." />
+            <marker date="1538452297293" expanded="true" signature="6479:6482" ph="..." />
           </folding>
         </state>
       </provider>
