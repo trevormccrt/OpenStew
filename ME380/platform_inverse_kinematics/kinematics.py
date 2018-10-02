@@ -81,7 +81,7 @@ def find_servo_angle(platform_attatchment_point_bcs,
 
         )
         return equations
-    alpha= newton_krylov(servo_angle_inverse_kinematic_equations, np.array([0.2, 0,0,coupler_length]),iter=1000,f_tol=0.009)[0]
+    alpha= newton_krylov(servo_angle_inverse_kinematic_equations, np.array([0.2, coupler_length/4,coupler_length/4,coupler_length/4]),iter=1000,f_tol=0.009)[0]
     alpha=np.mod(alpha,2*np.pi) #find right hand plane version of alpha
     return alpha
 

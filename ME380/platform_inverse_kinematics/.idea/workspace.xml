@@ -25,13 +25,13 @@
         <counts>
           <entry key="Python Console" value="14" />
           <entry key="dummy" value="10" />
-          <entry key="py" value="2585" />
+          <entry key="py" value="2603" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="10" />
-          <entry key="Python" value="2599" />
+          <entry key="Python" value="2617" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -51,11 +51,11 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/kinematics.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-153">
-              <caret line="75" column="72" selection-start-line="75" selection-start-column="72" selection-end-line="75" selection-end-column="72" />
+            <state relative-caret-position="427">
+              <caret line="95" selection-start-line="95" selection-end-line="95" />
               <folding>
                 <element signature="e#85#96#0" expanded="true" />
-                <marker date="1538443106230" expanded="true" signature="3465:4793" ph="..." />
+                <marker date="1538443560485" expanded="true" signature="3512:4839" ph="..." />
               </folding>
             </state>
           </provider>
@@ -195,7 +195,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="1985" y="48" width="1855" height="2112" extended-state="4" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.16731088" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -269,11 +268,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/kinematics.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-153">
-          <caret line="75" column="72" selection-start-line="75" selection-start-column="72" selection-end-line="75" selection-end-column="72" />
+        <state relative-caret-position="427">
+          <caret line="95" selection-start-line="95" selection-end-line="95" />
           <folding>
             <element signature="e#85#96#0" expanded="true" />
-            <marker date="1538443106230" expanded="true" signature="3465:4793" ph="..." />
+            <marker date="1538443560485" expanded="true" signature="3512:4839" ph="..." />
           </folding>
         </state>
       </provider>
