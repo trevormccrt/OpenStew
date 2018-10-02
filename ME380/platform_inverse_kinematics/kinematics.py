@@ -10,7 +10,7 @@ Created on Sat Nov 14 21:10:12 2015
 import math
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.optimize import fsolve
+from scipy.optimize import fsolve,newton_krylov, anderson, broyden2
 
 
 
@@ -81,12 +81,12 @@ def find_servo_angle(platform_attatchment_point_bcs,
 
         )
         return equations
-    alpha= fsolve(servo_angle_inverse_kinematic_equations, np.array([0.2, np.sqrt(coupler_length**2/3),np.sqrt(coupler_length**2/3),np.sqrt(coupler_length**2/3)]))[0]
-    alpha=np.arctan(np.sin(alpha)/np.cos(alpha)) #find right hand plane version of alpha
+    alpha= newton_krylov(servo_angle_inverse_kinematic_equations, np.array([0.2, 0,0,coupler_length]),iter=1000,f_tol=0.009)[0]
+    alpha=np.mod(alpha,2*np.pi) #find right hand plane version of alpha
     return alpha
 
 def solve_inverse_kinematics(base_angles,base_radius,platform_angles,platform_radius,target_platform_position,servo_arm_length,coupler_length,gamma):
-    base_attatchment_points_bcs=np.array([[base_radius*np.cos(theta), base_radius*math.sin(theta), 0] for theta in base_angles])
+    base_attatchment_points_bcs=np.array([[base_radius*np.cos(theta), base_radius*np.sin(theta), 0] for theta in base_angles])
     platform_attatchment_points_pcs = np.array([[platform_radius * np.cos(theta), platform_radius * np.sin(theta), 0] for theta in platform_angles])
     platform_attatchment_points_bcs = find_platform_mounting_point_positions(base_attatchment_points_bcs,platform_attatchment_points_pcs,target_platform_position)
     servo_angles=[]
@@ -98,11 +98,11 @@ def solve_inverse_kinematics(base_angles,base_radius,platform_angles,platform_ra
 if __name__=="__main__":
     test_base_angles = np.array([np.radians(x) for x in [60, 120, 180, 240, 300, 360]])
     test_base_radius=50
-    test_platform_angles = np.array([np.radians(x) for x in [30, 30, 150, 150, 270, 270]])
-    test_platform_radius = 25
-    test_home_height=100
+    test_platform_angles = np.array([np.radians(x) for x in [30, 150, 150, 270, 270, 30]])
+    test_platform_radius = 30
+    test_home_height=80
     test_link_1_length=25
-    test_link_2_length=150
-    test_gamma=np.radians(15)
-    solve_inverse_kinematics(test_base_angles,test_base_radius,test_platform_angles,test_platform_radius,[0,0,test_home_height,np.radians(30),0,0],test_link_1_length,test_link_2_length,test_gamma)
+    test_link_2_length=100
+    test_gamma=np.radians(0)
+    solve_inverse_kinematics(test_base_angles,test_base_radius,test_platform_angles,test_platform_radius,[0,0,test_home_height,0,0,0],test_link_1_length,test_link_2_length,test_gamma)
 
