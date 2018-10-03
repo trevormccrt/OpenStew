@@ -18,9 +18,7 @@ from sympy import Plane, Point3D
 
 
 def find_platform_mounting_point_positions(base_mounting_points_bcs, platform_mounting_points_pcs, platform_position):
-    """Finds leg lengths L such that the platform is in position defined by
-    a = [x, y, z, alpha, beta, gamma]
-    """
+
     #parse angles
     phi = platform_position[3]
     th = platform_position[4]
@@ -108,7 +106,7 @@ def pitch_roll_from_spherical(theta,total_angle_of_tilt):
     pitch=np.arccos(np.dot([0,rotation_vector[1],rotation_vector[2]],np.array([0,0,1]))/np.linalg.norm([0,rotation_vector[1],rotation_vector[2]]))
     return pitch,roll
 
-def find_range_of_motion(base_angles,base_radius,platform_angles,platform_radius,desired_angle_of_rotation,height_bounds,servo_arm_length,coupler_length, gamma, servo_odd_even,n_height_steps=10,angle_bounds_deg=(0,360),n_angle_steps=36):
+def find_range_of_motion(base_angles,base_radius,platform_angles,platform_radius,desired_angle_of_rotation,height_bounds,servo_arm_length,coupler_length, gamma, servo_odd_even,n_height_steps=10,angle_bounds_deg=(0,70),n_angle_steps=5):
     results=np.ones((n_height_steps,n_angle_steps))
     height_step=(height_bounds[1]-height_bounds[0])/n_height_steps
     angle_step=np.radians((angle_bounds_deg[1]-angle_bounds_deg[0]))/n_angle_steps
@@ -145,7 +143,7 @@ if __name__=="__main__":
     test_platform_radius = 128/2
     test_home_height=195
     test_link_1_length=45
-    test_link_2_length=220
+    test_link_2_length=220 #220
     test_gamma=np.radians(np.arctan((test_base_radius-test_platform_radius)/test_home_height))
     heights,results=find_range_of_motion(test_base_angles,test_base_radius,test_platform_angles,test_platform_radius,np.radians(40),[200,215],test_link_1_length,test_link_2_length,test_gamma,servo_odd_even)
     np.save("heights",np.array(heights))
