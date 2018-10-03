@@ -1,5 +1,7 @@
 from scipy.optimize import fsolve,newton_krylov, anderson, broyden2
 from scipy.optimize.nonlin import NoConvergence
+from datetime import datetime
+import json
 import numpy as np
 
 class StewartPlatform(object):
@@ -138,7 +140,7 @@ class StewartPlatform(object):
             :param n_angle_steps: how many rotations to try in domain
             :raises NoConvergence or ValueError: if no servo position exists(platform position is not possible)
             """
-        results = np.ones((n_height_steps, n_angle_steps))
+        results = []
         height_step = (height_bounds[1] - height_bounds[0]) / n_height_steps
         angle_step = np.radians((angle_bounds_deg[1] - angle_bounds_deg[0])) / n_angle_steps
         for i in range(n_height_steps):
@@ -146,15 +148,27 @@ class StewartPlatform(object):
             print("trying angles at height {}".format(current_height))
             for j in range(n_angle_steps):
                 current_angle = np.radians(angle_bounds_deg[0]) + (j * angle_step)
+                result={
+                    "tilt_magnitude":desired_angle_of_rotation,
+                    "tilt_direction":current_angle,
+                    "height":current_height,
+                    "positive_servo_angles":[],
+                    "negative_servo_angles":[]
+                }
                 pos_pitch, pos_roll = StewartPlatform.pitch_roll_from_spherical(current_angle, desired_angle_of_rotation)
                 try:
-                    stewart_platform.find_servo_positions([0, 0, current_height, pos_pitch, pos_roll, 0])
-                    stewart_platform.find_servo_positions([0, 0, current_height, -1*pos_pitch, -1* pos_roll, 0])
+                    result["positive_servo_angles"]=stewart_platform.find_servo_positions([0, 0, current_height, pos_pitch, pos_roll, 0])
+                    result["negative_servo_angles"]=stewart_platform.find_servo_positions([0, 0, current_height, -1*pos_pitch, -1* pos_roll, 0])
                     print("soln found height {} angle {}".format(current_height,current_angle))
                 except NoConvergence as e:
-                    results[i, j] = 0
+                    result["positive_servo_angles"]=0
+                    result["negative_servo_angles"]=0
                 except ValueError as e:
-                    results[i, j] = 0
+                    result["positive_servo_angles"] = 0
+                    result["negative_servo_angles"] = 0
+                results.append(result)
+        with open('range_of_motion_{}.json'.format(datetime.now().strftime("%Y%m%d%H%M%S")), 'w') as outfile:
+            json.dump(results, outfile)
         return results
 
     @staticmethod

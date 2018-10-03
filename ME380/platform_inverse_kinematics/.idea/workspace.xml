@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="57901432-2625-4a96-aede-aa7930c90fa4" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/StewartPlatform.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/full_results.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/heights.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/kinematics.py" beforeDir="false" afterPath="$PROJECT_DIR$/kinematics.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StewartPlatform.py" beforeDir="false" afterPath="$PROJECT_DIR$/StewartPlatform.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -32,13 +28,13 @@
         <counts>
           <entry key="Python Console" value="14" />
           <entry key="dummy" value="10" />
-          <entry key="py" value="8396" />
+          <entry key="py" value="8644" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="10" />
-          <entry key="Python" value="8410" />
+          <entry key="Python" value="8658" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -55,18 +51,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="600">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/kinematics.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1327">
-              <caret line="141" column="35" lean-forward="true" selection-start-line="141" selection-start-column="4" selection-end-line="141" selection-end-column="35" />
-              <folding>
-                <element signature="e#85#96#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$USER_HOME$/anaconda3/envs/me380/lib/python3.6/site-packages/scipy/sparse/linalg/isolve/_gcrotmk.py">
           <provider selected="true" editor-type-id="text-editor">
@@ -115,12 +99,12 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/StewartPlatform.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="726">
-              <caret line="185" selection-start-line="185" selection-end-line="185" />
+            <state relative-caret-position="842">
+              <caret line="203" lean-forward="true" selection-start-line="203" selection-end-line="203" />
               <folding>
                 <element signature="e#0#67#0" expanded="true" />
-                <marker date="1538594195674" expanded="true" signature="166:10034" ph="..." />
-                <marker date="1538594195674" expanded="true" signature="10032:10033" ph="..." />
+                <marker date="1538594712547" expanded="true" signature="208:10734" ph="..." />
+                <marker date="1538594712547" expanded="true" signature="10732:10733" ph="..." />
               </folding>
             </state>
           </provider>
@@ -268,6 +252,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="130" y="-8" width="3710" height="2168" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.08265139" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -295,18 +280,8 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/kinematics.py</url>
-          <line>150</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/kinematics.py</url>
-          <line>133</line>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/StewartPlatform.py</url>
-          <line>185</line>
+          <line>199</line>
           <option name="timeStamp" value="4" />
         </line-breakpoint>
       </breakpoints>
@@ -369,12 +344,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/StewartPlatform.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="726">
-          <caret line="185" selection-start-line="185" selection-end-line="185" />
+        <state relative-caret-position="842">
+          <caret line="203" lean-forward="true" selection-start-line="203" selection-end-line="203" />
           <folding>
             <element signature="e#0#67#0" expanded="true" />
-            <marker date="1538594195674" expanded="true" signature="166:10034" ph="..." />
-            <marker date="1538594195674" expanded="true" signature="10032:10033" ph="..." />
+            <marker date="1538594712547" expanded="true" signature="208:10734" ph="..." />
+            <marker date="1538594712547" expanded="true" signature="10732:10733" ph="..." />
           </folding>
         </state>
       </provider>
