@@ -5,7 +5,7 @@ import json
 import numpy as np
 
 class StewartPlatform(object):
-    def __init__(self,base_radius,platform_radius,servo_arm_length,coupler_length,home_height, base_attatchment_point_angles, platform_angles,servo_pitch_angle,servo_odd_even,servo_angles=None):
+    def __init__(self,base_radius,platform_radius,servo_arm_length,coupler_length,home_height, base_attatchment_point_angles, platform_angles,servo_pitch_angle,servo_odd_even,servo_angles=None,max_tilt=np.radians(30),max_angular_velocity=np.radians(20)):
         """
                 Creates a stewart platform object
                 all params in consistent length units and radians for angles
@@ -15,6 +15,8 @@ class StewartPlatform(object):
                 :param platform_angles: angles of where rod end connects to platform about platform coordinate system
                 :param servo_pitch_angle: angle of servo shaft with respect to base xy plane
                 :param servo_odd_even: list of 1 or -1, for clockwise or counter-clockwise rotation of the servo
+                :param max_tilt: angular range of motion of this stewart platform about some arbitrary axis at home_height
+                :param max_angular_velocity: maximum angular velocity platform can move at
 \
                 """
         self.base_radius=base_radius
@@ -31,6 +33,9 @@ class StewartPlatform(object):
             self.servo_angles=base_attatchment_point_angles
         self.base_attatchment_points_bcs=np.array([[self.base_radius*np.cos(theta), base_radius*np.sin(theta), 0] for theta in self.base_attatchment_point_angles])
         self.platform_attatchment_points_pcs=np.array([[self.platform_radius * np.cos(theta), platform_radius * np.sin(theta), 0] for theta in self.platform_angles])
+
+        self.max_tilt=max_tilt
+        self.max_angular_velocity=max_angular_velocity
 
     def transform_platform_attatchment_points(self,platform_position):
         """
@@ -129,6 +134,45 @@ class StewartPlatform(object):
             servo_angles.append(find_servo_angle(servo))
         return servo_angles
 
+    def constant_omega_motion_discretized_tilt(self, motion_length_mm,discretization_time_ms):
+        """
+            Finds a servo angle via numerical soloution of inverse kinematic equations
+
+            :param servo: which servo to solve
+            :returns: servo angle in radians
+            """
+        t_ramp = self.max_tilt / self.max_angular_velocity
+        def theta_long(move_time_s,time):
+            term_1=self.max_angular_velocity * time * (1 - np.heaviside(time - t_ramp,1))
+            term_2=self.max_angular_velocity * t_ramp * (np.heaviside(time - t_ramp,1) - np.heaviside(time - (move_time_s - t_ramp),1))
+            term_3=(-1*self.max_angular_velocity * (time-(solve_time-t_ramp/2)) + self.max_angular_velocity * t_ramp) * (np.heaviside(time - (move_time_s - t_ramp),1) - np.heaviside(time - move_time_s,1))
+            return term_1+term_2+term_3
+
+        def theta_short(move_time_s,time):
+            term_1=self.max_angular_velocity*time*(1-np.heaviside(time-(move_time_s/2),1))
+            term_2=((-1*self.max_angular_velocity*(time-move_time_s/2)+(self.max_angular_velocity*move_time_s/2)))*(np.heaviside(time-(move_time_s/2),0))
+            val=term_1+term_2
+
+            return val
+
+
+        motion_length_m=motion_length_mm/(2*1000)
+
+        short_time_s=(2*(7**(2.0/3.0))*(motion_length_m**(1.0/3.0)))/(7*(self.max_angular_velocity**(1.0/3.0)))
+        long_time_s=((self.max_tilt**3 + (8*motion_length_m*self.max_angular_velocity**2)/7)**(1/2) + self.max_tilt**(3/2))/(2*self.max_tilt**(1/2)*self.max_angular_velocity)
+        if short_time_s < 2*t_ramp:
+            solve_time=short_time_s
+            motion_calculator=theta_short
+        else:
+            solve_time=long_time_s
+            motion_calculator=theta_long
+        times=np.arange(0,solve_time,discretization_time_ms/1000.0)
+        times_2=np.arange(solve_time+discretization_time_ms/1000,2*solve_time+(discretization_time_ms/1000),discretization_time_ms/1000)
+        angles=np.array([motion_calculator(solve_time,step) for step in times])
+        time_series=np.vstack((np.column_stack((times,angles)),np.column_stack((times_2,-1*np.flip(angles)))))
+
+        return time_series
+
     @staticmethod
     def find_range_of_motion(stewart_platform,desired_angle_of_rotation,height_bounds, n_height_steps=20, angle_bounds_deg=(0, 70), n_angle_steps=5):
         """
@@ -140,18 +184,27 @@ class StewartPlatform(object):
             :param n_angle_steps: how many rotations to try in domain
             :raises NoConvergence or ValueError: if no servo position exists(platform position is not possible)
             """
-        results = []
+        all_results = {
+            "tilt_magnitude": desired_angle_of_rotation,
+            "height_results":[]
+        }
         height_step = (height_bounds[1] - height_bounds[0]) / n_height_steps
         angle_step = np.radians((angle_bounds_deg[1] - angle_bounds_deg[0])) / n_angle_steps
+
         for i in range(n_height_steps):
             current_height = height_bounds[0] + i * height_step
             print("trying angles at height {}".format(current_height))
+
+            height_results={
+                "height":current_height,
+                "results":[]
+            }
+            angle_results=[]
+            all = 1
             for j in range(n_angle_steps):
                 current_angle = np.radians(angle_bounds_deg[0]) + (j * angle_step)
                 result={
-                    "tilt_magnitude":desired_angle_of_rotation,
                     "tilt_direction":current_angle,
-                    "height":current_height,
                     "positive_servo_angles":[],
                     "negative_servo_angles":[]
                 }
@@ -163,13 +216,18 @@ class StewartPlatform(object):
                 except NoConvergence as e:
                     result["positive_servo_angles"]=0
                     result["negative_servo_angles"]=0
+                    all=0
                 except ValueError as e:
                     result["positive_servo_angles"] = 0
                     result["negative_servo_angles"] = 0
-                results.append(result)
+                    all=0
+                angle_results.append(result)
+            if(all):
+                height_results["results"]=angle_results
+                all_results["height_results"].append(height_results)
         with open('range_of_motion_{}.json'.format(datetime.now().strftime("%Y%m%d%H%M%S")), 'w') as outfile:
-            json.dump(results, outfile)
-        return results
+            json.dump(all_results, outfile)
+        return all_results
 
     @staticmethod
     def pitch_roll_from_spherical(theta, total_angle_of_tilt):
@@ -183,11 +241,14 @@ class StewartPlatform(object):
         rotation_vector = np.array(
             [np.cos(theta) * np.sin(total_angle_of_tilt), np.sin(theta) * np.sin(total_angle_of_tilt),
              np.cos(total_angle_of_tilt)])
-        roll = np.arccos(np.dot([rotation_vector[0], 0, rotation_vector[2]], np.array([0, 0, 1])) / np.linalg.norm(
-            [rotation_vector[0], 0, rotation_vector[2]]))
-        pitch = np.arccos(np.dot([0, rotation_vector[1], rotation_vector[2]], np.array([0, 0, 1])) / np.linalg.norm(
-            [0, rotation_vector[1], rotation_vector[2]]))
+        roll=np.arctan2(rotation_vector[0], rotation_vector[2])
+        pitch=np.arctan2(rotation_vector[1], rotation_vector[2])
+        #roll = np.arccos(np.dot([rotation_vector[0], 0, rotation_vector[2]], np.array([0, 0, 1])) / np.linalg.norm(
+         #   [rotation_vector[0], 0, rotation_vector[2]]))
+        #pitch = np.arccos(np.dot([0, rotation_vector[1], rotation_vector[2]], np.array([0, 0, 1])) / np.linalg.norm(
+          #  [0, rotation_vector[1], rotation_vector[2]]))
         return pitch, roll
+
 
 
 if __name__=="__main__":
