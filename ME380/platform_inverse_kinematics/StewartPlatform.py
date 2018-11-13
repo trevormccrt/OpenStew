@@ -125,7 +125,9 @@ class StewartPlatform(object):
             else:
                 init_guess = 0
             alpha = newton_krylov(servo_angle_inverse_kinematic_equations, [init_guess])[0]
-            alpha = np.mod(alpha, 2 * np.pi)
+            #alpha = np.mod(alpha, 2 * np.pi)
+            if(alpha<0):
+                alpha+=2*np.pi
             return alpha
 
         transformed_platform_attatchment_points=self.transform_platform_attatchment_points(platform_position)

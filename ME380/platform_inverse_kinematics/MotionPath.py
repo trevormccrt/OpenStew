@@ -34,7 +34,6 @@ class MotionPath(object):
             platform_angle_timeseries=np.append(platform_angle_timeseries,timerseries_with_angle,axis=0)
         return platform_angle_timeseries
 
-        pass
     def _find_servo_motion(self):
         """
            find servo angles given a bunch of platform positions stored in self.platform_angle_timeseries
@@ -51,8 +50,48 @@ class MotionPath(object):
             servo_position[0,1:]=servo_angles
             servo_angle_timeseries = np.append(servo_angle_timeseries, servo_position, axis=0)
         return servo_angle_timeseries
-    def _find_servo_steps(self):
-        pass
+    def plot_servo_trajectories(self):
+        plt.subplot(7, 1, 1)
+        plt.plot(self.platform_angle_timeseries[:, 0], self.platform_angle_timeseries[:, 1])
+        plt.ylabel('Platform tilt (rad)')
+        plt.xlabel('time')
+        plt.title('platform')
+        for i in range(1, 7):
+            plt.subplot(7, 1, i + 1)
+            plt.plot(self.servo_position_timeseries[:, 0], self.servo_position_timeseries[:, i])
+            plt.ylabel('servo {} angle (rad)'.format(i))
+            #plt.title('servo {} at position {}'.format(i, np.round(self.stewart_platform.base_attatchment_points_bcs[i - 1], 3)))
+        plt.xlabel('time')
+        #plt.tight_layout()
+        plt.show()
+
+    def csv_servo_trajcectories(self,fname):
+        np.savetxt(fname,self.servo_position_timeseries,delimiter=',')
+
+    def string_servo_trajectories(self,time_precision=6,angle_precision=4):
+        def buffer_string_with_zeros(string,length):
+            if(len(string)<length):
+                n_buff=length-len(string)
+                for i in range(n_buff):
+                    string="{}{}".format(0,string)
+            return string
+
+        strings=[]
+        for position in self.servo_position_timeseries:
+            pos_str=""
+            time=int(position[0]*1000)
+            if(time>10000):
+                raise Exception("Motion path too large to be stored by arduino")
+            time=buffer_string_with_zeros(str(time),time_precision)
+            pos_str+=time
+            for angle in position[1:]:
+                deg=int(np.rad2deg(angle))
+                deg*=10
+                deg_str=buffer_string_with_zeros(str(deg),angle_precision)
+                pos_str+=deg_str
+            strings.append(pos_str)
+        return strings
+
 
 if __name__=="__main__":
     stu = StewartPlatform(base_radius=100, platform_radius=128 / 2, servo_arm_length=45, coupler_length=220,
@@ -62,20 +101,8 @@ if __name__=="__main__":
                           platform_angles=np.array([np.radians(x) for x in [30, 150, 150, 270, 270, 30]]),
                           servo_pitch_angle=np.radians(np.arctan((100 - 128 / 2) / 204)),
                           servo_odd_even=[1, -1, 1, -1, 1, -1],
-                          max_angular_velocity=np.radians(40))
-    # test=stu.constant_omega_motion_discretized_tilt(100,10)
+                          max_angular_velocity=np.radians(180))
 
-    path=MotionPath(np.array([np.array([0,0]),np.array([50,0]),np.array([0,0]),np.array([-50,0])]),stu,10)
-    plt.subplot(7,1,1)
-    plt.plot(path.platform_angle_timeseries[:, 0], path.platform_angle_timeseries[:, 1])
-    plt.ylabel('theta')
-    plt.xlabel('time')
-    plt.title('platform')
-    for i in range(1,7):
-        plt.subplot(7,1,i+1)
-        plt.plot(path.servo_position_timeseries[:,0],path.servo_position_timeseries[:,i])
-        plt.ylabel('theta')
-        plt.title('servo {} at position {}'.format(i,np.round(stu.base_attatchment_points_bcs[i-1],3)))
-    plt.xlabel('time')
-    plt.show()
-    print("")
+    path=MotionPath(np.array([np.array([0,0]),np.array([150,0]),np.array([0,0]),np.array([-150,0])]),stu,10)
+    path.plot_servo_trajectories()
+    path.csv_servo_trajcectories("servo_traj_180rads_150mmball.csv")
