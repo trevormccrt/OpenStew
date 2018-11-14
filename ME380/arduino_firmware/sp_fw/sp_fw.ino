@@ -13,11 +13,13 @@ int n_commands=0;
 
 
 //servo calibration data
-int servo_mapping[N_SERVOS]={6,5,4,3,2,1}; //translate from python servo numbering to hardware
+int servo_mapping[N_SERVOS]={6,5,4,3,2,1};
+
+ //translate from python servo numbering to hardware
 //all of these arrays are indexed as TRUE SERVO NUMBER (wire label) - 1
 int servo_min[N_SERVOS]={165,165,135,185,155,160};
 int servo_max[N_SERVOS]={575,600,505,735,685,595};
-int servo_zero[N_SERVOS]={300,300,300,300,300,300}; //horizontal
+int servo_zero[N_SERVOS]={500,300,300,500,300,300}; //horizontal
 int servo_range[N_SERVOS]={180,180,180,180,180,180};
 int servo_direction[N_SERVOS]={1,0,1,0,1,0}; //0 for unit CCW from outside base, 1 for CW from outside base
 float servo_gain[N_SERVOS];
@@ -130,11 +132,15 @@ void setup()
   for(int i=0;i<N_SERVOS;i++){
     servo_gain[i]=(float)(servo_max[i]-servo_min[i])/(float)servo_range[i];
   }
+  for (int i=0; i<N_SERVOS; i++) {
+    pwm.setPWM(servo_mapping[i], 0, servo_zero[servo_mapping[i]]); // added +1 to match PWM port numbering (pints 1..6 used)
+  }
           
 }
 void loop()
 {
-
+  while(!Serial.available())                                 
+      {delay(poll_rate_ms);}
   data=Serial.readStringUntil('\n');
     
   data.trim();
@@ -143,6 +149,8 @@ void loop()
     Serial.println(F("ok"));
     n_commands=read_encoded_commands();
     convert_angle_to_PWM();
+    print_commands(n_commands);
+    
     Serial.println(F("Received Path"));
     Serial.println(F("any character to execute:"));
     while(!Serial.available())                                 

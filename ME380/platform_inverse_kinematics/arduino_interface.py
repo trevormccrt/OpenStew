@@ -47,7 +47,8 @@ if __name__=="__main__":
 
     path = MotionPath(np.array([np.array([0, 0]), np.array([150, 0]), np.array([0, 0]), np.array([-150, 0])]), stu, 10)
     msg=path.string_servo_trajectories()
-    ard = arduino_interface('/dev/ttyACM2', 115200)
+    ard = arduino_interface('/dev/ttyACM0', 115200)
+    time.sleep(1)
     ard.send_string("start")
     ard.poll_until_message("ok")
     ard.reset_serial_buff()

@@ -2,10 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="57901432-2625-4a96-aede-aa7930c90fa4" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/arduino_interface.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../arduino_firmware/sp_fw/sp_fw.ino" beforeDir="false" afterPath="$PROJECT_DIR$/../arduino_firmware/sp_fw/sp_fw.ino" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MotionPath.py" beforeDir="false" afterPath="$PROJECT_DIR$/MotionPath.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/StewartPlatform.py" beforeDir="false" afterPath="$PROJECT_DIR$/StewartPlatform.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/arduino_interface.py" beforeDir="false" afterPath="$PROJECT_DIR$/arduino_interface.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -17,32 +16,34 @@
     <session id="1857089068">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="15" />
+          <entry key="project.closed" value="17" />
           <entry key="project.open.time.0" value="4" />
           <entry key="project.open.time.1" value="1" />
           <entry key="project.open.time.11" value="1" />
           <entry key="project.open.time.12" value="1" />
           <entry key="project.open.time.23" value="1" />
+          <entry key="project.open.time.24" value="1" />
+          <entry key="project.open.time.25" value="1" />
           <entry key="project.open.time.4" value="2" />
           <entry key="project.open.time.5" value="1" />
           <entry key="project.open.time.6" value="5" />
           <entry key="project.open.time.7" value="1" />
           <entry key="project.open.time.8" value="1" />
           <entry key="project.open.time.9" value="1" />
-          <entry key="project.opened" value="19" />
+          <entry key="project.opened" value="21" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="Python Console" value="38" />
           <entry key="dummy" value="10" />
-          <entry key="py" value="15859" />
+          <entry key="py" value="15875" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="10" />
-          <entry key="Python" value="15897" />
+          <entry key="Python" value="15913" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -98,8 +99,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/StewartPlatform.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret line="102" column="103" lean-forward="true" selection-start-line="102" selection-start-column="103" selection-end-line="102" selection-end-column="103" />
+            <state relative-caret-position="2842">
+              <caret line="102" column="103" selection-start-line="102" selection-start-column="103" selection-end-line="102" selection-end-column="103" />
               <folding>
                 <element signature="e#0#67#0" expanded="true" />
               </folding>
@@ -119,7 +120,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/MotionPath.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1624">
+            <state relative-caret-position="2668">
               <caret line="92" selection-start-line="92" selection-end-line="92" />
               <folding>
                 <element signature="e#0#43#0" expanded="true" />
@@ -134,12 +135,12 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/arduino_interface.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="677">
-              <caret line="49" column="38" selection-start-line="49" selection-start-column="38" selection-end-line="49" selection-end-column="38" />
+            <state relative-caret-position="1540">
+              <caret line="59" column="11" lean-forward="true" selection-start-line="59" selection-start-column="11" selection-end-line="59" selection-end-column="11" />
               <folding>
                 <element signature="e#0#25#0" expanded="true" />
-                <marker date="1542145639349" expanded="true" signature="427:436" ph="..." />
-                <marker date="1542145639349" expanded="true" signature="946:989" ph="..." />
+                <marker date="1542155622478" expanded="true" signature="427:436" ph="..." />
+                <marker date="1542155622478" expanded="true" signature="946:989" ph="..." />
               </folding>
             </state>
           </provider>
@@ -148,8 +149,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$USER_HOME$/anaconda3/envs/me380/lib/python3.6/site-packages/serial/serialposix.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="441">
-              <caret line="270" column="12" lean-forward="true" selection-start-line="270" selection-start-column="12" selection-end-line="270" selection-end-column="12" />
+            <state relative-caret-position="-4041">
+              <caret line="267" selection-start-line="267" selection-end-line="267" />
             </state>
           </provider>
         </entry>
@@ -352,15 +353,14 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="130" y="-8" width="3710" height="2168" extended-state="6" />
-    <editor active="true" />
+    <frame x="129" y="13" width="3712" height="2148" extended-state="6" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.08237861" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.31354168" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.31354168" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.44479167" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -425,9 +425,9 @@
           <option name="timeStamp" value="8" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/MotionPath.py</url>
-          <line>92</line>
-          <option name="timeStamp" value="9" />
+          <url>file://$PROJECT_DIR$/arduino_interface.py</url>
+          <line>60</line>
+          <option name="timeStamp" value="10" />
         </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
@@ -488,6 +488,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/StewartPlatform.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2842">
+          <caret line="102" column="103" selection-start-line="102" selection-start-column="103" selection-end-line="102" selection-end-column="103" />
+          <folding>
+            <element signature="e#0#67#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$USER_HOME$/anaconda3/envs/me380/lib/python3.6/site-packages/numpy/core/shape_base.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="6757">
@@ -504,24 +514,14 @@
     </entry>
     <entry file="file://$USER_HOME$/anaconda3/envs/me380/lib/python3.6/site-packages/serial/serialposix.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="441">
-          <caret line="270" column="12" lean-forward="true" selection-start-line="270" selection-start-column="12" selection-end-line="270" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/StewartPlatform.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="102" column="103" lean-forward="true" selection-start-line="102" selection-start-column="103" selection-end-line="102" selection-end-column="103" />
-          <folding>
-            <element signature="e#0#67#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="-4041">
+          <caret line="267" selection-start-line="267" selection-end-line="267" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/MotionPath.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1624">
+        <state relative-caret-position="2668">
           <caret line="92" selection-start-line="92" selection-end-line="92" />
           <folding>
             <element signature="e#0#43#0" expanded="true" />
@@ -534,12 +534,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/arduino_interface.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="677">
-          <caret line="49" column="38" selection-start-line="49" selection-start-column="38" selection-end-line="49" selection-end-column="38" />
+        <state relative-caret-position="1540">
+          <caret line="59" column="11" lean-forward="true" selection-start-line="59" selection-start-column="11" selection-end-line="59" selection-end-column="11" />
           <folding>
             <element signature="e#0#25#0" expanded="true" />
-            <marker date="1542145639349" expanded="true" signature="427:436" ph="..." />
-            <marker date="1542145639349" expanded="true" signature="946:989" ph="..." />
+            <marker date="1542155622478" expanded="true" signature="427:436" ph="..." />
+            <marker date="1542155622478" expanded="true" signature="946:989" ph="..." />
           </folding>
         </state>
       </provider>
