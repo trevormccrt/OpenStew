@@ -19,10 +19,10 @@ int servo_mapping[N_SERVOS]={6,5,4,3,2,1};
 //all of these arrays are indexed as TRUE SERVO NUMBER (wire label) - 1
 int servo_min[N_SERVOS]={165,165,135,185,155,160};
 int servo_max[N_SERVOS]={575,600,505,735,685,595};
-int servo_zero[N_SERVOS]={500,300,300,500,300,300}; //horizontal
-int servo_range[N_SERVOS]={180,180,180,180,180,180};
-int servo_direction[N_SERVOS]={1,0,1,0,1,0}; //0 for unit CCW from outside base, 1 for CW from outside base
-float servo_gain[N_SERVOS];
+int servo_zero[N_SERVOS]={389,405,440,321,369,376}; 
+//horizontal
+int servo_direction[N_SERVOS]={0,1,0,1,0,1}; //0 for unit CCW from outside base, 1 for CW from outside base
+float servo_gain[N_SERVOS]={2.00,-2.32,1.84,-2.93,2.83,-2.43};
 
 //servo positions
 int servo_positions[N_SERVOS];
@@ -53,7 +53,9 @@ void exec_commands(int n_commands){
       for(int i=0;i<N_SERVOS+1;i++)
         {
           for (i=0; i<N_SERVOS; i++) {
-            pwm.setPWM(servo_mapping[i], 0, commands[j][i]); // added +1 to match PWM port numbering (pints 1..6 used)
+            Serial.println(i+1);
+            Serial.println(commands[j][servo_mapping[i]]);
+            pwm.setPWM(i+1, 0, commands[j][servo_mapping[i]]); // added +1 to match PWM port numbering (pints 1..6 used)
           }
         }
     
@@ -63,11 +65,10 @@ void exec_commands(int n_commands){
 
 void convert_angle_to_PWM(){
   for(int j=0;j<n_commands;j++){
-    for(int i=1;i<N_SERVOS+1;i++)
+    for(int i=0;i<N_SERVOS;i++)
     {
-      int real_servo_num=servo_mapping[i-1];
-      int clocking=servo_direction[real_servo_num-1];
-      int angle=(float)commands[j][i]/10.0;
+      int clocking=servo_direction[i];
+      int angle=(float)commands[j][i+1]/10.0;
       if(clocking==1){
         angle=180-angle;
       }
@@ -76,8 +77,9 @@ void convert_angle_to_PWM(){
           angle=angle-360;
         }
       }
-      int pwm=(angle*servo_gain[real_servo_num-1])+servo_zero[real_servo_num-1];
-      commands[j][i]=pwm;
+      int pwm=(angle*servo_gain[i])+servo_zero[i];
+      
+      commands[j][i+1]=pwm;
     }
   }
 }
@@ -128,12 +130,11 @@ void setup()
   Serial.begin(115200); 
   pwm.begin();
   pwm.setPWMFreq(60);
-  //calculate servo gains
-  for(int i=0;i<N_SERVOS;i++){
-    servo_gain[i]=(float)(servo_max[i]-servo_min[i])/(float)servo_range[i];
-  }
+
   for (int i=0; i<N_SERVOS; i++) {
-    pwm.setPWM(servo_mapping[i], 0, servo_zero[servo_mapping[i]]); // added +1 to match PWM port numbering (pints 1..6 used)
+    Serial.println(servo_mapping[i]);
+    Serial.println(servo_zero[i]);
+    pwm.setPWM(servo_mapping[i], 0, servo_zero[i]); // added +1 to match PWM port numbering (pints 1..6 used)
   }
           
 }

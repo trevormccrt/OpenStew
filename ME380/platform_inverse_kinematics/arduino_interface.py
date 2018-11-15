@@ -8,6 +8,7 @@ message=''
 class arduino_interface():
     def __init__(self,port,baud_rate):
         self.ser=Serial(port,baud_rate)
+        time.sleep(1)
         thread = threading.Thread(target=self.non_blocking_read)
         thread.start()
         self.last_serial_string=None
@@ -34,21 +35,22 @@ class arduino_interface():
 
 
 
+
 if __name__=="__main__":
 
-    stu = StewartPlatform(base_radius=100, platform_radius=128 / 2, servo_arm_length=45, coupler_length=220,
-                          home_height=210,
+    stu = StewartPlatform(base_radius=116, platform_radius=128 / 2, servo_arm_length=45, coupler_length=220,
+                          home_height=207,
                           base_attatchment_point_angles=np.array(
                               [np.radians(x) for x in [60, 120, 180, 240, 300, 360]]),
-                          platform_angles=np.array([np.radians(x) for x in [30, 150, 150, 270, 270, 30]]),
+                          platform_angles=np.array([np.radians(x) for x in [47.72, 132.38, 167.72, 252.28, 287.7, 12.28]]),
                           servo_pitch_angle=np.radians(np.arctan((100 - 128 / 2) / 204)),
                           servo_odd_even=[1, -1, 1, -1, 1, -1],
-                          max_angular_velocity=np.radians(180))
+                          max_angular_velocity=np.radians(90))
 
-    path = MotionPath(np.array([np.array([0, 0]), np.array([150, 0]), np.array([0, 0]), np.array([-150, 0])]), stu, 10)
+    path = MotionPath(np.array([np.array([0, 0]), np.array([70, 0]), np.array([0, 0]), np.array([70, 0]),np.array([0, 0]), np.array([0, 70]), np.array([0, 0]), np.array([0, 70])]), stu, 30)
+    path.plot_servo_trajectories()
     msg=path.string_servo_trajectories()
     ard = arduino_interface('/dev/ttyACM0', 115200)
-    time.sleep(1)
     ard.send_string("start")
     ard.poll_until_message("ok")
     ard.reset_serial_buff()
