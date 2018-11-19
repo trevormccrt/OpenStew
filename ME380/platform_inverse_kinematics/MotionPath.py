@@ -4,20 +4,63 @@ import matplotlib.pyplot as plt
 
 
 class MotionPath(object):
-    def __init__(self,position_vectors_mm,stewart_platform,discretization_density_ms):
+    # def __init__(self,position_vectors_mm,stewart_platform,discretization_density_ms):
+    #     """
+    #        find platform motion timeseries given a bunch of position vectors
+    #        :param position_vectors_mm: desired ball postions, format [[x,y],[x,y]...] np.array
+    #        :param stewart_platform: stewart platform that is executing the motion
+    #        """
+    #     self.position_vectors_mm=np.array(position_vectors_mm)
+    #     self.stewart_platform=stewart_platform
+    #     self.platform_angle_timeseries=self._find_platform_motion(discretization_density_ms)
+    #     self.servo_position_timeseries=self._find_servo_motion()
+    def __init__(self,stewart_platform,platform_angle_timeseries):
         """
            find platform motion timeseries given a bunch of position vectors
            :param position_vectors_mm: desired ball postions, format [[x,y],[x,y]...] np.array
            :param stewart_platform: stewart platform that is executing the motion
            """
-        self.position_vectors_mm=np.array(position_vectors_mm)
         self.stewart_platform=stewart_platform
-        self.platform_angle_timeseries=self._find_platform_motion(discretization_density_ms)
+        self.platform_angle_timeseries=np.squeeze(platform_angle_timeseries)
         self.servo_position_timeseries=self._find_servo_motion()
+        print()
+
+    @classmethod
+    def from_platform_angles(cls,stewart_platform,platform_angle_targets,discretization_density_ms):
+        '''
+        :param platform_angle_targets: [time, theta,direction (angle from x axis)]
+
+        :return:
+        '''
+        positions=[]
+        starting_pitch,starting_roll=stewart_platform.pitch_roll_from_spherical(platform_angle_targets[0][2],platform_angle_targets[0][1])
+        current_pitch=starting_pitch
+        current_roll=starting_roll
+        current_time=platform_angle_targets[0][0]
+        for position in platform_angle_targets[1:]:
+            pitch,roll=stewart_platform.pitch_roll_from_spherical(position[2],position[1])
+            delta_pitch=pitch-current_pitch
+            delta_roll=roll-current_roll
+            delta_time=position[0]-current_time
+            time_steps=int(delta_time/(discretization_density_ms/1000))
+            pitch_step=delta_pitch/time_steps
+            roll_step=delta_roll/time_steps
+            print(pitch_step)
+            print(roll_step)
+            for step in range(time_steps):
+                current_pitch+=pitch_step
+                current_roll+=roll_step
+                current_time+=discretization_density_ms/1000
+                positions.append([current_time,0,0,stewart_platform.home_height,current_pitch,current_roll,0])
+        positions=np.array(positions)
+        return MotionPath(stewart_platform,positions)
+
+
+
 
     def _find_platform_motion(self,discretization_density_ms):
         """
-           find platform motion timeseries given a bunch of position vectors
+           find platform motion timeseries given a bunch of ball position vectors
            :param discretization_density_s: time grid spacing
            """
         platform_angle_timeseries=np.empty((0,3),float)
@@ -34,22 +77,37 @@ class MotionPath(object):
             platform_angle_timeseries=np.append(platform_angle_timeseries,timerseries_with_angle,axis=0)
         return platform_angle_timeseries
 
+    # def _find_servo_motion(self):
+    #     """
+    #        find servo angles given a bunch of platform positions stored in self.platform_angle_timeseries
+    #        """
+    #     servo_angle_timeseries = np.empty((0, 7), float)
+    #     for index in range(self.platform_angle_timeseries[:,0].size):
+    #         pitch,roll=StewartPlatform.pitch_roll_from_spherical(self.platform_angle_timeseries[index,2], self.platform_angle_timeseries[index,1])
+    #         print("pitch {}, roll {}".format(np.round(pitch,3),np.round(roll,3)))
+    #         platform_position=[0,0,self.stewart_platform.home_height,pitch,roll,0]
+    #         servo_angles=np.empty((1, 6), float)
+    #         servo_angles[:]=self.stewart_platform.find_servo_positions(platform_position)
+    #         servo_position=np.zeros((1,7))
+    #         servo_position[0]=self.platform_angle_timeseries[index,0]
+    #         servo_position[0,1:]=servo_angles
+    #         servo_angle_timeseries = np.append(servo_angle_timeseries, servo_position, axis=0)
+    #     return servo_angle_timeseries
+
     def _find_servo_motion(self):
         """
            find servo angles given a bunch of platform positions stored in self.platform_angle_timeseries
            """
         servo_angle_timeseries = np.empty((0, 7), float)
         for index in range(self.platform_angle_timeseries[:,0].size):
-            pitch,roll=StewartPlatform.pitch_roll_from_spherical(self.platform_angle_timeseries[index,2], self.platform_angle_timeseries[index,1])
-            print("pitch {}, roll {}".format(np.round(pitch,3),np.round(roll,3)))
-            platform_position=[0,0,self.stewart_platform.home_height,pitch,roll,0]
-            servo_angles=np.empty((1, 6), float)
-            servo_angles[:]=self.stewart_platform.find_servo_positions(platform_position)
+            platform_position=self.platform_angle_timeseries[index,1:]
+            servo_angles=np.array(self.stewart_platform.find_servo_positions(platform_position))
             servo_position=np.zeros((1,7))
             servo_position[0]=self.platform_angle_timeseries[index,0]
             servo_position[0,1:]=servo_angles
             servo_angle_timeseries = np.append(servo_angle_timeseries, servo_position, axis=0)
         return servo_angle_timeseries
+
     def plot_servo_trajectories(self):
         plt.subplot(7, 1, 1)
         plt.plot(self.platform_angle_timeseries[:, 0], self.platform_angle_timeseries[:, 1])
@@ -93,16 +151,27 @@ class MotionPath(object):
         return strings
 
 
+# if __name__=="__main__":
+#     stu = StewartPlatform(base_radius=100, platform_radius=128 / 2, servo_arm_length=45, coupler_length=220,
+#                           home_height=210,
+#                           base_attatchment_point_angles=np.array(
+#                               [np.radians(x) for x in [60, 120, 180, 240, 300, 360]]),
+#                           platform_angles=np.array([np.radians(x) for x in [30, 150, 150, 270, 270, 30]]),
+#                           servo_pitch_angle=np.radians(np.arctan((100 - 128 / 2) / 204)),
+#                           servo_odd_even=[1, -1, 1, -1, 1, -1],
+#                           max_angular_velocity=np.radians(180))
+#
+#     path=MotionPath(np.array([np.array([0,0]),np.array([150,0]),np.array([0,0]),np.array([-150,0])]),stu,10)
+#     path.plot_servo_trajectories()
+#     path.csv_servo_trajcectories("servo_traj_180rads_150mmball.csv")
 if __name__=="__main__":
     stu = StewartPlatform(base_radius=100, platform_radius=128 / 2, servo_arm_length=45, coupler_length=220,
-                          home_height=210,
-                          base_attatchment_point_angles=np.array(
-                              [np.radians(x) for x in [60, 120, 180, 240, 300, 360]]),
-                          platform_angles=np.array([np.radians(x) for x in [30, 150, 150, 270, 270, 30]]),
-                          servo_pitch_angle=np.radians(np.arctan((100 - 128 / 2) / 204)),
-                          servo_odd_even=[1, -1, 1, -1, 1, -1],
-                          max_angular_velocity=np.radians(180))
-
-    path=MotionPath(np.array([np.array([0,0]),np.array([150,0]),np.array([0,0]),np.array([-150,0])]),stu,10)
+                                                    home_height=210,
+                                                    base_attatchment_point_angles=np.array(
+                                                        [np.radians(x) for x in [60, 120, 180, 240, 300, 360]]),
+                                                    platform_angles=np.array([np.radians(x) for x in [30, 150, 150, 270, 270, 30]]),
+                                                    servo_pitch_angle=np.radians(np.arctan((100 - 128 / 2) / 204)),
+                                                    servo_odd_even=[1, -1, 1, -1, 1, -1],
+                                                    max_angular_velocity=np.radians(180))
+    path=MotionPath.from_platform_angles(stu,[[0,0,0],[1,np.radians(30),0],[2,np.radians(30),np.radians(90)]],20)
     path.plot_servo_trajectories()
-    path.csv_servo_trajcectories("servo_traj_180rads_150mmball.csv")

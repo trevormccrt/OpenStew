@@ -19,7 +19,8 @@ int servo_mapping[N_SERVOS]={6,5,4,3,2,1};
 //all of these arrays are indexed as TRUE SERVO NUMBER (wire label) - 1
 int servo_min[N_SERVOS]={165,165,135,185,155,160};
 int servo_max[N_SERVOS]={575,600,505,735,685,595};
-int servo_zero[N_SERVOS]={389,405,440,321,369,376}; 
+int servo_zero[N_SERVOS]={340,362,410,325,330,372}; 
+//int servo_zero[N_SERVOS]={369,370,430,321,350,376}; 
 //horizontal
 int servo_direction[N_SERVOS]={0,1,0,1,0,1}; //0 for unit CCW from outside base, 1 for CW from outside base
 float servo_gain[N_SERVOS]={2.00,-2.32,1.84,-2.93,2.83,-2.43};
@@ -47,7 +48,7 @@ void exec_commands(int n_commands){
     int start_time=millis();
     for(int j=0;j<n_commands;j++){
       while(millis()-start_time <commands[j][0]){
-        delay(5);
+        delay(1);
       }
       Serial.println(millis());
       for(int i=0;i<N_SERVOS+1;i++)
@@ -160,6 +161,9 @@ void loop()
     exec_commands(n_commands);
     data="";             
     }
+  if(data=="repeat"){
+    exec_commands(n_commands);
+  }
     else if(data!=""){
       Serial.println("ERROR: COMMAND UNKNOWN");
       Serial.println(data);

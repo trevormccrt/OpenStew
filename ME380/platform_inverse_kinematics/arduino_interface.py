@@ -45,9 +45,14 @@ if __name__=="__main__":
                           platform_angles=np.array([np.radians(x) for x in [47.72, 132.38, 167.72, 252.28, 287.7, 12.28]]),
                           servo_pitch_angle=np.radians(np.arctan((100 - 128 / 2) / 204)),
                           servo_odd_even=[1, -1, 1, -1, 1, -1],
-                          max_angular_velocity=np.radians(90))
-
-    path = MotionPath(np.array([np.array([0, 0]), np.array([70, 0]), np.array([0, 0]), np.array([70, 0]),np.array([0, 0]), np.array([0, 70]), np.array([0, 0]), np.array([0, 70])]), stu, 30)
+                          max_tilt=50,
+                          max_angular_velocity=np.radians(100),
+                          axis_offset=np.radians(125),
+                          offset_90=np.radians(0),
+                          offset_0=np.radians(0)
+                          )
+    path = MotionPath.from_platform_angles(stu,[[0, 0, 0], [0.5, np.radians(30), np.radians(90)],[1.2, np.radians(30), np.radians(90)],[1.5, np.radians(10), np.radians(10)],[1.55, np.radians(10), np.radians(10)],[1.57, np.radians(10), np.radians(-130)],[1.66, np.radians(30), np.radians(-130)],[2.1, np.radians(30), np.radians(-50)],[2.5, np.radians(30), np.radians(-50)],[3.05, np.radians(30), np.radians(-45)],[4.0, np.radians(5), np.radians(120)]], 20)
+    #path = MotionPath.from_platform_angles(stu, [[0, 0, 0], [5, 0, 0]],100)
     path.plot_servo_trajectories()
     msg=path.string_servo_trajectories()
     ard = arduino_interface('/dev/ttyACM0', 115200)
@@ -63,4 +68,8 @@ if __name__=="__main__":
     st_time=time.time()
     ard.send_string("go")
     ard.poll_until_message("dn")
+    while(True):
+        input()
+        ard.send_string("repeat")
+
     print(time.time()-st_time)

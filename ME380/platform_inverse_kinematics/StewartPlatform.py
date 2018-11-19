@@ -5,7 +5,7 @@ import json
 import numpy as np
 
 class StewartPlatform(object):
-    def __init__(self,base_radius,platform_radius,servo_arm_length,coupler_length,home_height, base_attatchment_point_angles, platform_angles,servo_pitch_angle,servo_odd_even,servo_angles=None,max_tilt=np.radians(30),max_angular_velocity=np.radians(20)):
+    def __init__(self,base_radius,platform_radius,servo_arm_length,coupler_length,home_height, base_attatchment_point_angles, platform_angles,servo_pitch_angle,servo_odd_even,servo_angles=None,max_tilt=np.radians(30),max_angular_velocity=np.radians(20),axis_offset=0,offset_90=0,offset_0=0):
         """
                 Creates a stewart platform object
                 all params in consistent length units and radians for angles
@@ -36,6 +36,12 @@ class StewartPlatform(object):
 
         self.max_tilt=max_tilt
         self.max_angular_velocity=max_angular_velocity
+        self.axis_offset=axis_offset
+        self.offset_90=offset_90
+        self.offset_0=offset_0
+
+    def tranlate_axis(self):
+        pass
 
     def transform_platform_attatchment_points(self,platform_position):
         """
@@ -231,8 +237,8 @@ class StewartPlatform(object):
             json.dump(all_results, outfile)
         return all_results
 
-    @staticmethod
-    def pitch_roll_from_spherical(theta, total_angle_of_tilt):
+
+    def pitch_roll_from_spherical(self,theta, total_angle_of_tilt):
         """
             find pitch and roll components of an arbitrary platform tilt
             :param theta: direction of tilt (about z axis, measured from x axis)
@@ -240,16 +246,30 @@ class StewartPlatform(object):
             """
         # theta=angle from x axis
         # total_angle_of_tile=angle from x-y plane
+        theta=theta+self.axis_offset
+
         rotation_vector = np.array(
             [np.cos(theta) * np.sin(total_angle_of_tilt), np.sin(theta) * np.sin(total_angle_of_tilt),
-             np.cos(total_angle_of_tilt)])
-        roll=np.arctan2(rotation_vector[0], rotation_vector[2])
-        pitch=np.arctan2(rotation_vector[1], rotation_vector[2])
+             np.cos(total_angle_of_tilt)]) #platform normal vector
+        offset_0_vector=np.array(
+            [np.cos(self.axis_offset) * np.sin(self.offset_0), np.sin(self.axis_offset) * np.sin(self.offset_0),
+             np.cos(self.offset_0)])
+        offset_90_vector = np.array(
+            [np.cos(self.axis_offset-np.pi/2) * np.sin(self.offset_90), np.sin(self.axis_offset-np.pi/2) * np.sin(self.offset_90),
+             np.cos(self.offset_90)])
+        roll_nom=np.arctan2(rotation_vector[0], rotation_vector[2])
+        pitch_nom=np.arctan2(rotation_vector[1], rotation_vector[2])
+        roll_0 = np.arctan2(offset_0_vector[0], offset_0_vector[2])
+        pitch_0 = np.arctan2(offset_0_vector[1], offset_0_vector[2])
+        roll_90 = np.arctan2(offset_90_vector[0], offset_90_vector[2])
+        pitch_90 = np.arctan2(offset_90_vector[1], offset_90_vector[2])
+        roll_total=roll_nom-roll_0-roll_90
+        pitch_total=pitch_nom-pitch_0-pitch_90
         #roll = np.arccos(np.dot([rotation_vector[0], 0, rotation_vector[2]], np.array([0, 0, 1])) / np.linalg.norm(
          #   [rotation_vector[0], 0, rotation_vector[2]]))
         #pitch = np.arccos(np.dot([0, rotation_vector[1], rotation_vector[2]], np.array([0, 0, 1])) / np.linalg.norm(
           #  [0, rotation_vector[1], rotation_vector[2]]))
-        return pitch, roll
+        return pitch_total, roll_total
 
 
 
