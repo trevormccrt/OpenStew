@@ -3,7 +3,7 @@
 Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
 
 //path storage
-const int N_COMMANDS_MAX=300;
+const int N_COMMANDS_MAX=400;
 const int DATA_PRECISION=4;
 const int TIME_PRECISION=6;
 const int N_SERVOS=6;
@@ -19,11 +19,11 @@ int servo_mapping[N_SERVOS]={6,5,4,3,2,1};
 //all of these arrays are indexed as TRUE SERVO NUMBER (wire label) - 1
 int servo_min[N_SERVOS]={165,165,135,185,155,160};
 int servo_max[N_SERVOS]={575,600,505,735,685,595};
-int servo_zero[N_SERVOS]={340,362,410,325,330,372}; 
-//int servo_zero[N_SERVOS]={369,370,430,321,350,376}; 
+//int servo_zero[N_SERVOS]={330,351,385,330,310,376}; //original
+int servo_zero[N_SERVOS]={375,380,430,321,345,400}; //cold
 //horizontal
 int servo_direction[N_SERVOS]={0,1,0,1,0,1}; //0 for unit CCW from outside base, 1 for CW from outside base
-float servo_gain[N_SERVOS]={2.00,-2.32,1.84,-2.93,2.83,-2.43};
+float servo_gain[N_SERVOS]={2.46,-2.32,1.84,-2.93,2.83,-2.43};
 
 //servo positions
 int servo_positions[N_SERVOS];
@@ -48,14 +48,11 @@ void exec_commands(int n_commands){
     int start_time=millis();
     for(int j=0;j<n_commands;j++){
       while(millis()-start_time <commands[j][0]){
-        delay(1);
+        delay(5);
       }
-      Serial.println(millis());
       for(int i=0;i<N_SERVOS+1;i++)
         {
           for (i=0; i<N_SERVOS; i++) {
-            Serial.println(i+1);
-            Serial.println(commands[j][servo_mapping[i]]);
             pwm.setPWM(i+1, 0, commands[j][servo_mapping[i]]); // added +1 to match PWM port numbering (pints 1..6 used)
           }
         }

@@ -51,21 +51,23 @@ if __name__=="__main__":
                           offset_90=np.radians(0),
                           offset_0=np.radians(0)
                           )
-    path = MotionPath.from_platform_angles(stu,[[0, 0, 0], [0.5, np.radians(30), np.radians(90)],[1.2, np.radians(30), np.radians(90)],[1.5, np.radians(10), np.radians(10)],[1.55, np.radians(10), np.radians(10)],[1.57, np.radians(10), np.radians(-130)],[1.66, np.radians(30), np.radians(-130)],[2.1, np.radians(30), np.radians(-50)],[2.5, np.radians(30), np.radians(-50)],[3.05, np.radians(30), np.radians(-45)],[4.0, np.radians(5), np.radians(120)]], 20)
+    path = MotionPath.from_platform_angles(stu,[[0, 0, 0], [0.5, np.radians(30), np.radians(90)],[1.2, np.radians(30), np.radians(90)],[1.28, np.radians(25), np.radians(40)],[1.30, np.radians(25), np.radians(40)],[1.32, np.radians(20), np.radians(-160)],[1.66, np.radians(30), np.radians(-160)],[2.15, np.radians(30), np.radians(-40)],[2.42, np.radians(30), np.radians(-60)],[2.9, np.radians(30), np.radians(-30)],[4.5, np.radians(2), np.radians(130)]], 20)
     #path = MotionPath.from_platform_angles(stu, [[0, 0, 0], [5, 0, 0]],100)
     path.plot_servo_trajectories()
+    path.csv_servo_trajcectories("path_solve.csv")
     msg=path.string_servo_trajectories()
     ard = arduino_interface('/dev/ttyACM0', 115200)
     ard.send_string("start")
     ard.poll_until_message("ok")
     ard.reset_serial_buff()
+
     for message in msg:
         ard.send_string(message)
         ard.poll_until_message("ok")
         ard.reset_serial_buff()
     ard.send_string("end")
-    input()
     st_time=time.time()
+    input()
     ard.send_string("go")
     ard.poll_until_message("dn")
     while(True):

@@ -53,9 +53,20 @@ class MotionPath(object):
                 current_time+=discretization_density_ms/1000
                 positions.append([current_time,0,0,stewart_platform.home_height,current_pitch,current_roll,0])
         positions=np.array(positions)
-        return MotionPath(stewart_platform,positions)
+        return cls(stewart_platform,positions)
 
-
+    @classmethod
+    def from_platform_positions(cls,stewart_platform,platform_position_targets,discretization_density_ms):
+        position_timeseries=[]
+        position_timeseries.append(platform_position_targets[0])
+        for index,position in enumerate(platform_position_targets[:-1]):
+            delta=np.array(platform_position_targets[index+1])-np.array(position)
+            steps=int(delta[0]/(discretization_density_ms/1000))
+            all_step=delta/steps
+            next=np.array(position)
+            for step in range(steps):
+                position_timeseries.append(np.array(position)+step*all_step)
+        return cls(stewart_platform,platform_position_targets)
 
 
     def _find_platform_motion(self,discretization_density_ms):
@@ -138,7 +149,7 @@ class MotionPath(object):
         for position in self.servo_position_timeseries:
             pos_str=""
             time=int(position[0]*1000)
-            if(time>10000):
+            if(time>15000):
                 raise Exception("Motion path too large to be stored by arduino")
             time=buffer_string_with_zeros(str(time),time_precision)
             pos_str+=time
