@@ -1,0 +1,27 @@
+*.pickle
+*.txt
+*.bak
+
+# ignore compiled python files
+*.pyc
+
+# ignore idea SDK
+.idea/*
+
+# ignore cache
+*__pycache__/*
+*.cache/*
+*.mypy_cache/*
+*.pytest_cache/*
+*.egg-info/*
+
+# Documentation related
+docs/_build
+docs/_static
+docs/_templates
+*.html
+*.png
+*.cc
+
+# Text files in docs
+!docs/*.txt
