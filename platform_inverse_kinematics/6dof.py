@@ -1,10 +1,12 @@
-import arduino_interface
-import StewartPlatform
-import MotionPath
+from platform_inverse_kinematics.arduino_interface import arduino_interface
+from platform_inverse_kinematics.MotionPath import MotionPath
+from platform_inverse_kinematics.StewartPlatform import StewartPlatform
+
 import numpy as np
 
 if __name__=="__main__":
-    stu = StewartPlatform.StewartPlatform(base_radius=116, platform_radius=128 / 2, servo_arm_length=45, coupler_length=220,
+    #6DOF demonstration
+    stu = StewartPlatform(base_radius=116, platform_radius=128 / 2, servo_arm_length=45, coupler_length=220,
                               home_height=207,
                               base_attatchment_point_angles=np.array(
                                   [np.radians(x) for x in [60, 120, 180, 240, 300, 360]]),
@@ -17,10 +19,17 @@ if __name__=="__main__":
                               offset_90=np.radians(0),
                               offset_0=np.radians(0)
                               )
-    path = MotionPath.MotionPath.from_platform_positions(stu,[[0,0,0,stu.home_height,np.radians(10),0,0],[1,20,-20,stu.home_height,0,np.radians(10),0],[2,-20,20,stu.home_height,0,0,np.radians(10)],
-                                                              [3, 0, 0, stu.home_height-15, np.radians(10), 0, 0],[4, 0, 0, stu.home_height+15, np.radians(-10), 0, 0]],30)
+
+
+    path = MotionPath.from_platform_positions(stu,[[0,0,0,stu.home_height,np.radians(10),0,0],
+                                                              [1,20,-20,stu.home_height,0,np.radians(10),0],
+                                                              [2,-20,20,stu.home_height,0,0,np.radians(10)],
+                                                              [3, 0, 0, stu.home_height-15, np.radians(10), 0, 0],
+                                                              [4, 0, 0, stu.home_height+15, np.radians(-10), 0, 0]],30)
+
+    path.csv_servo_trajcectories("6dof.csv")
     msg=path.string_servo_trajectories()
-    ard = arduino_interface.arduino_interface('/dev/ttyACM0', 115200)
+    ard = arduino_interface('/dev/ttyACM0', 115200)
     ard.send_string("start")
     ard.poll_until_message("ok")
     input()

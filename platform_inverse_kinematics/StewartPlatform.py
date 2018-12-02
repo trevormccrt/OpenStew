@@ -17,6 +17,9 @@ class StewartPlatform(object):
                 :param servo_odd_even: list of 1 or -1, for clockwise or counter-clockwise rotation of the servo
                 :param max_tilt: angular range of motion of this stewart platform about some arbitrary axis at home_height
                 :param max_angular_velocity: maximum angular velocity platform can move at
+                :param axis_offset: offset to use when translating tilts in spherical coordinates to 6DOF position vectors
+                :param offset_0: correction applied for platform zeroing error about 0 degree direction (DOES NOT WORK, LEAVE 0 UNLESS YOU FIX)
+                :param offset_90:correction applied for platform zeroing error about 90 degree direction (DOES NOT WORK, LEAVE 0 UNLESS YOU FIX)
 \
                 """
         self.base_radius=base_radius
@@ -39,9 +42,6 @@ class StewartPlatform(object):
         self.axis_offset=axis_offset
         self.offset_90=offset_90
         self.offset_0=offset_0
-
-    def tranlate_axis(self):
-        pass
 
     def transform_platform_attatchment_points(self,platform_position):
         """
@@ -142,44 +142,6 @@ class StewartPlatform(object):
             servo_angles.append(find_servo_angle(servo))
         return servo_angles
 
-    def constant_omega_motion_discretized_tilt(self, motion_length_mm,discretization_time_ms):
-        """
-            Finds a servo angle via numerical soloution of inverse kinematic equations
-
-            :param servo: which servo to solve
-            :returns: servo angle in radians
-            """
-        t_ramp = self.max_tilt / self.max_angular_velocity
-        def theta_long(move_time_s,time):
-            term_1=self.max_angular_velocity * time * (1 - np.heaviside(time - t_ramp,1))
-            term_2=self.max_angular_velocity * t_ramp * (np.heaviside(time - t_ramp,1) - np.heaviside(time - (move_time_s - t_ramp),1))
-            term_3=(-1*self.max_angular_velocity * (time-(solve_time-t_ramp/2)) + self.max_angular_velocity * t_ramp) * (np.heaviside(time - (move_time_s - t_ramp),1) - np.heaviside(time - move_time_s,1))
-            return term_1+term_2+term_3
-
-        def theta_short(move_time_s,time):
-            term_1=self.max_angular_velocity*time*(1-np.heaviside(time-(move_time_s/2),1))
-            term_2=((-1*self.max_angular_velocity*(time-move_time_s/2)+(self.max_angular_velocity*move_time_s/2)))*(np.heaviside(time-(move_time_s/2),0))
-            val=term_1+term_2
-
-            return val
-
-
-        motion_length_m=motion_length_mm/(2*1000)
-
-        short_time_s=(2*(7**(2.0/3.0))*(motion_length_m**(1.0/3.0)))/(7*(self.max_angular_velocity**(1.0/3.0)))
-        long_time_s=((self.max_tilt**3 + (8*motion_length_m*self.max_angular_velocity**2)/7)**(1/2) + self.max_tilt**(3/2))/(2*self.max_tilt**(1/2)*self.max_angular_velocity)
-        if short_time_s < 2*t_ramp:
-            solve_time=short_time_s
-            motion_calculator=theta_short
-        else:
-            solve_time=long_time_s
-            motion_calculator=theta_long
-        times=np.arange(0,solve_time,discretization_time_ms/1000.0)
-        times_2=np.arange(solve_time+discretization_time_ms/1000,2*solve_time+(discretization_time_ms/1000),discretization_time_ms/1000)
-        angles=np.array([motion_calculator(solve_time,step) for step in times])
-        time_series=np.vstack((np.column_stack((times,angles)),np.column_stack((times_2,-1*np.flip(angles)))))
-
-        return time_series
 
     @staticmethod
     def find_range_of_motion(stewart_platform,desired_angle_of_rotation,height_bounds, n_height_steps=20, angle_bounds_deg=(0, 70), n_angle_steps=5):
@@ -273,14 +235,6 @@ class StewartPlatform(object):
 
 
 
-if __name__=="__main__":
-    stu=StewartPlatform(base_radius=100,platform_radius=128/2,servo_arm_length=45,coupler_length=220,home_height=204,
-                        base_attatchment_point_angles=np.array([np.radians(x) for x in [60, 120, 180, 240, 300, 360]]),
-                        platform_angles=np.array([np.radians(x) for x in [30, 150, 150, 270, 270, 30]]),
-                        servo_pitch_angle=np.radians(np.arctan((100-128/2)/204)),
-                        servo_odd_even=[1,-1,1,-1,1,-1])
-    range_of_motion=StewartPlatform.find_range_of_motion(stu,np.radians(35),[190,240])
-    print("")
 
 
 

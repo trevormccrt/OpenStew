@@ -19,8 +19,8 @@ int servo_mapping[N_SERVOS]={6,5,4,3,2,1};
 //all of these arrays are indexed as TRUE SERVO NUMBER (wire label) - 1
 int servo_min[N_SERVOS]={165,165,135,185,155,160};
 int servo_max[N_SERVOS]={575,600,505,735,685,595};
-//int servo_zero[N_SERVOS]={330,351,385,330,310,376}; //original
-int servo_zero[N_SERVOS]={375,380,430,321,345,400}; //cold
+//int servo_zero[N_SERVOS]={390,351,425,330,310,376}; //original
+int servo_zero[N_SERVOS]={295,360,393,332,310,400}; //cold
 //horizontal
 int servo_direction[N_SERVOS]={0,1,0,1,0,1}; //0 for unit CCW from outside base, 1 for CW from outside base
 float servo_gain[N_SERVOS]={2.46,-2.32,1.84,-2.93,2.83,-2.43};
