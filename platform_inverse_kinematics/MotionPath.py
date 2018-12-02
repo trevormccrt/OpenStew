@@ -1,4 +1,4 @@
-from StewartPlatform import StewartPlatform
+from platform_inverse_kinematics.StewartPlatform import StewartPlatform
 import numpy as np
 import matplotlib.pyplot as plt
 
